@@ -92,7 +92,7 @@ _build:
 	yarn run build
 
 _cacheInvalidation:
-	aws cloudfront create-invalidation --distribution-id=$(shell aws cloudformation --region ap-southeast-2 describe-stacks --stack-name MV-$(REALM)-$(PROJECT)-$(ENV) --query 'Stacks[0].Outputs[?OutputKey==`WebAppCloudFrontDistributionIdOutput`].OutputValue' --output=text) --paths "/*"
+	aws cloudfront create-invalidation --distribution-id=$(shell aws cloudformation --region ap-southeast-2 describe-stacks --stack-name $(REALM)-$(PROJECT)-$(ENV) --query 'Stacks[0].Outputs[?OutputKey==`WebAppCloudFrontDistributionIdOutput`].OutputValue' --output=text) --paths "/*"
 
 _start:
 	yarn start
