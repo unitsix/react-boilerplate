@@ -11,18 +11,19 @@ jobs:
       script: make test
     - stage: deploy to dev
       script: make deploy
+      env:
+        - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
+        - ENV=dev
+        - REALM=nonprod
       deploy:
         provider: script
-        env:
-          - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
-          - ENV=dev
-          - REALM=nonprod
     - stage: deploy to production
       script: make deploy
+      env:
+        - DOMAIN_NAME=www.$DOMAIN_NAME
+        - ENV=prod
+        - REALM=prodprod
       on:
           branch: master
       deploy:
         provider: script
-        env:
-          - ENV=prod
-          - REALM=prodprod
