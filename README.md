@@ -1,6 +1,6 @@
 # unitsix/react-boilerplate
 
-[![Build Status](https://travis-ci.com/unitsix/react-boilerplate.svg?branch=master)](https://travis-ci.com/unitsix/react-boilerplate)
+[![Build Status](https://travis-ci.com/unitsix/react-boilerplate.svg?branch=master)](https://travis-ci.com/unitsix/react-boilerplate) [![Maintainability](https://api.codeclimate.com/v1/badges/0906f22527d1b99a4cb8/maintainability)](https://codeclimate.com/github/unitsix/react-boilerplate/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0906f22527d1b99a4cb8/test_coverage)](https://codeclimate.com/github/unitsix/react-boilerplate/test_coverage)
 
 ## Pre-requisites
 
