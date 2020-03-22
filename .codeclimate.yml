@@ -20,3 +20,6 @@ exclude_paths:
 - .idea/
 - coverage/
 - .nyc_output/
+- tests/
+- "**/__tests__/"
+- "**/__mocks__/"
