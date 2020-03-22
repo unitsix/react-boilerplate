@@ -63,3 +63,12 @@ Deploy to AWS S3:
 ```bash
 make deploy
 ```
+
+## Slack
+Add to travis
+
+```bash
+travis encrypt "XXX:xxxx" --add notifications.slack --com
+```
+
+View in apps in Slack
