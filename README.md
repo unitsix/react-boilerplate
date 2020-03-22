@@ -1,5 +1,7 @@
 # unitsix/react-boilerplate
 
+[![Build Status](https://travis-ci.com/unitsix/react-boilerplate.svg?branch=master)](https://travis-ci.com/unitsix/react-boilerplate)
+
 ## Pre-requisites
 
 * Docker
