@@ -5,27 +5,24 @@ sudo: required
 services:
   - docker
 
+notifications:
+  slack: $SLACK
+
 jobs:
   include:
     - stage: unit tests
       script: make test
-      notifications:
-        slack: $SLACK
     - stage: deploy to dev
       script: make deploy
       env:
         - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
         - ENV=dev
         - REALM=nonprod
-      notifications:
-        slack: $SLACK
     - stage: deploy to production
       script: make deploy
       env:
         - DOMAIN_NAME=www.$DOMAIN_NAME
         - ENV=production
         - REALM=prod
-      notifications:
-        slack: $SLACK
       on:
           branch: master
