@@ -9,6 +9,8 @@ jobs:
   include:
   - stage: unit tests
     script: make test
+    env:
+    - GIT_BRANCH=$CIRCLE_BRANCH
   - stage: deploy to dev
     script: make deploy
     env:
