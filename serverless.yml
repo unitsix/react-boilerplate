@@ -1,4 +1,4 @@
-service: ${env:REALM}-$(env:PROJECT)
+service: ${env:REALM}-${env:PROJECT}
 
 plugins:
   - "@unitsix/serverless-spa-plugin"
