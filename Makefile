@@ -70,7 +70,6 @@ node_modules:
 _test:
 	yarn run lint
 	yarn run test
-	# yarn run pact-test
 
 _systemTest:
 	yarn run system-test
@@ -79,7 +78,6 @@ _testUnitWithCoverage:
 	yarn run lint
 	./node_modules/nyc/bin/nyc.js --reporter=json yarn run test
 	./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info
-	# yarn run pact-test
 
 _testUnit:
 	yarn run test
