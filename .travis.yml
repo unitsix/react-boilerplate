@@ -1,28 +1,25 @@
 language: minimal
-
 sudo: required
-
 services:
-  - docker
-
+- docker
 notifications:
-  slack: $SLACK
-
+  slack:
+    secure: cilSDU/3htgxSB3hIqWx2i8wTXip/F9ne9MqotMPUwHrbxMPeM828qoMCaKpvR2Kj1d9C93CpNupr2D31PEqAa0uebLBjPmSn/5bQw8jtfxY0baAJv8G7IjuYWbmJIU/Nn/Iy5ZuN7ppluRmhgq6oKGIPlRw2SCRgiXCPzsE1VkGP0/o1FfOoeiYkjH+ZUBGAG3O5tUsK1fQ0Bke+/S9H2haQYQtA5YV+uBzybpU9yhTrkdCviUR4fnlYndM/BaS0WYloU4C5zybKcJD2tqHMgdRS1jh7QxYOgrvR4I+sEprdptNnEHNpgGfkHG4Kf6JG34XG0ZPXa9SqH8h4VgQ+wCulAED1d0WCYLqH4irjwI7DJC+jbfJ8vbdUF6CtgwyWBJRfHq3stR9oUvXi6CNbM4e/CKB8g//8eQq1KcyLf7Hq3LJUPimo+wd7n/FgY5YYAFh49vLl9wJIXiHfOTzhgorMORHiBeuHRteWWAYR4AnWxEZrFQLbjmYHol0xxXptGfiYqgiKm+MdYA8MmxOizhFGe46loZ6bhP8U1OvTosjakOLukUiC5eHiUVCjiDxH4UVZxwwrFen4V/X5ykKWsHeiol6seDzj3FhDN9pMkSZOaUhOTvmUw3BKZzHAZy0XM3WoLsnLSycMD77kzBUxbcytePbSaxxKYWFQxfc31M=
 jobs:
   include:
-    - stage: unit tests
-      script: make test
-    - stage: deploy to dev
-      script: make deploy
-      env:
-        - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
-        - ENV=dev
-        - REALM=nonprod
-    - stage: deploy to production
-      script: make deploy
-      env:
-        - DOMAIN_NAME=www.$DOMAIN_NAME
-        - ENV=production
-        - REALM=prod
-      on:
-          branch: master
+  - stage: unit tests
+    script: make test
+  - stage: deploy to dev
+    script: make deploy
+    env:
+    - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
+    - ENV=dev
+    - REALM=nonprod
+  - stage: deploy to production
+    script: make deploy
+    env:
+    - DOMAIN_NAME=www.$DOMAIN_NAME
+    - ENV=production
+    - REALM=prod
+    on:
+      branch: master
