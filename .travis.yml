@@ -1,0 +1,28 @@
+language: minimal
+
+sudo: required
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: unit tests
+      script: make test
+    - stage: deploy to dev
+      script: make deploy
+      deploy:
+        provider: script
+        env:
+          - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
+          - ENV=dev
+          - REALM=nonprod
+    - stage: deploy to production
+      script: make deploy
+      on:
+          branch: master
+      deploy:
+        provider: script
+        env:
+          - ENV=prod
+          - REALM=prodprod

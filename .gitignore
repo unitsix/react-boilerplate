@@ -1,0 +1,14 @@
+node_modules
+node_modules.zip
+dist
+.serverless
+.env
+logs
+pacts
+*.log
+.idea/
+coverage/
+.nyc_output/
+package-lock.json
+.DS_Store
+.npmrc

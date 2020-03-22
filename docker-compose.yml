@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  serverless:
+    image: ryanstockdale/serverless-nodejs:latest
+    env_file: .env
+    volumes:
+      - ~/.aws:/root/.aws:Z
+      - .:/opt/app:Z

@@ -1,0 +1,22 @@
+---
+engines:
+  eslint:
+    enabled: true
+    config:
+      extensions:
+      - .js
+      - .jsx
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript:
+exclude_paths:
+- dist/
+- node_modules/
+- .serverless/
+- logs/
+- pacts/
+- .idea/
+- coverage/
+- .nyc_output/
