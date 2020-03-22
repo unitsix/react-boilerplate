@@ -15,8 +15,6 @@ jobs:
         - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
         - ENV=dev
         - REALM=nonprod
-      deploy:
-        provider: script
     - stage: deploy to production
       script: make deploy
       env:
@@ -25,5 +23,3 @@ jobs:
         - REALM=prodprod
       on:
           branch: master
-      deploy:
-        provider: script
