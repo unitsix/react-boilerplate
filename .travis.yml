@@ -10,7 +10,7 @@ jobs:
   - stage: unit tests
     script: make test
     env:
-    - GIT_BRANCH=$CIRCLE_BRANCH
+    - CIRCLE_BRANCH=$(Build.SourceBranchName)
   - stage: deploy to dev
     script: make deploy
     env:
