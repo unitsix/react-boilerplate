@@ -10,7 +10,7 @@ jobs:
   - stage: unit tests
     script: make test
     env:
-    - CIRCLE_BRANCH=$(Build.SourceBranchName)
+    - GIT_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then printf "$TRAVIS_BRANCH"; else printf "$TRAVIS_PULL_REQUEST_BRANCH"; fi)
   - stage: deploy to dev
     script: make deploy
     env:
