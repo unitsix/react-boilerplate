@@ -76,7 +76,7 @@ _systemTest:
 
 _testUnitWithCoverage:
 	yarn run lint
-	echo $GIT_BRANCH
+	echo "GIT_BRANCH = $(GIT_BRANCH)"
 	./node_modules/nyc/bin/nyc.js --reporter=json yarn run test
 	./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info
 
