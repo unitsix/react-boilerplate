@@ -1,4 +1,4 @@
-language: node_js
+language: minimal
 sudo: required
 services:
 - docker
@@ -12,14 +12,11 @@ jobs:
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build
-    script:
-    - yarn
-    - ./node_modules/nyc/bin/nyc.js --reporter=json npm run test
-    after_script:
-    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+    script: make test
     env:
     - CC_TEST_REPORTER_ID=$CODECLIMATE_REPO_TOKEN
-    - GIT_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then printf "$TRAVIS_BRANCH"; else printf "$TRAVIS_PULL_REQUEST_BRANCH"; fi)
+    after_script:
+    - ./cc-test-reporter after-build --prefix /opt/app --exit-code $TRAVIS_TEST_RESULT
   - stage: deploy to dev
     script: make deploy
     env:
@@ -27,10 +24,9 @@ jobs:
     - ENV=dev
     - REALM=nonprod
   - stage: deploy to production
+    if: branch = master
     script: make deploy
     env:
     - DOMAIN_NAME=www.$DOMAIN_NAME
     - ENV=production
     - REALM=prod
-    on:
-      branch: master
