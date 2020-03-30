@@ -24,10 +24,9 @@ jobs:
     - ENV=dev
     - REALM=nonprod
   - stage: deploy to production
+    if: branch = master
     script: make deploy
     env:
     - DOMAIN_NAME=www.$DOMAIN_NAME
     - ENV=production
     - REALM=prod
-    on:
-      branch: master
