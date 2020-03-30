@@ -35,6 +35,10 @@ remove: $(DOTENV_TARGET)
 
 assumeRole: .env
 	docker run --rm -e "AWS_ACCOUNT_ID" -e "AWS_ROLE" amaysim/aws:1.1.3 assume-role.sh >> .env
+
+getBitToken: $(DOTENV_TARGET)
+	docker-compose run -p 8080:8080 -p 8085:8085 --rm serverless make _bitLogin _registry
+
 .PHONY: assumeRole
 
 ##########
@@ -54,9 +58,26 @@ dotenv:
 _shell: _registry
 	bash
 
-_registry:
+_registry: _clearNPMregistry
+	echo "Adding npm token to npm registry"
 	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
 	yarn config set registry http://registry.npmjs.org
+	echo "Completed adding npm token to npm registry"
+	echo "Adding bit.dev to npm registry"
+	echo "always-auth=true" >> .npmrc
+	echo "@bit:registry=https://node.bit.dev" >> .npmrc
+	echo "//node.bit.dev/:_authToken=$(BIT_TOKEN)" >> .npmrc
+	echo "Completed adding bit.dev to npm registry"
+
+_bitLogin:
+	bit login
+	echo $(bit config get user.token) >> ~/.bittoken
+	export BIT_TOKEN=$(awk '{print $NF}' ~/.bittoken | paste -sd, | sed 's/,/, /g')
+	sed -i 's/BIT_TOKEN.*/BIT_TOKEN='"$(BIT_TOKEN)"'/' .env
+
+_clearNPMregistry:
+	rm .npmrc
+	touch .npmrc
 
 # _deps depends on node_modules
 _deps: node_modules
@@ -78,7 +99,6 @@ _testUnitWithCoverage:
 	yarn run lint
 	echo "GIT_BRANCH = $(GIT_BRANCH)"
 	./node_modules/nyc/bin/nyc.js --reporter=json yarn run test
-	# ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info
 
 _testUnit:
 	yarn run test
