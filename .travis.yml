@@ -16,7 +16,7 @@ jobs:
     env:
     - CC_TEST_REPORTER_ID=$CODECLIMATE_REPO_TOKEN
     after_script:
-    - ./cc-test-reporter format-coverage coverage/lcov.info --input-type lcov
+    - ./cc-test-reporter format-coverage coverage/lcov.info --input-type lcov --prefix /opt/app
     - ./cc-test-reporter upload-coverage --debug
   - stage: deploy to dev
     script: make deploy
