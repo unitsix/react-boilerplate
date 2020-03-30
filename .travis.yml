@@ -1,4 +1,4 @@
-language: minimal
+language: node_js
 sudo: required
 services:
 - docker
@@ -12,7 +12,9 @@ jobs:
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build
-    script: make test
+    script:
+    - yarn
+    - ./node_modules/nyc/bin/nyc.js --reporter=json npm run test
     after_script:
     - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     env:
