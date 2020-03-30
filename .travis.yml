@@ -13,11 +13,10 @@ jobs:
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build
     script: make test
-    after_script:
-    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     env:
     - CC_TEST_REPORTER_ID=$CODECLIMATE_REPO_TOKEN
-    - GIT_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then printf "$TRAVIS_BRANCH"; else printf "$TRAVIS_PULL_REQUEST_BRANCH"; fi)
+    after_script:
+    - ./cc-test-reporter upload-coverage --debug
   - stage: deploy to dev
     script: make deploy
     env:
