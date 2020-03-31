@@ -5,7 +5,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import { Theme } from './styles'
+import Theme from '../Theme'
 import HelloWorld from '../../pages/hello-world/HelloWorld'
 import NotFound from '../../pages/not-found/NotFound'
 

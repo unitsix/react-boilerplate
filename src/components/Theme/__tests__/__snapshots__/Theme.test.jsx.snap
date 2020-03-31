@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: <Example /> renders in dark mode 1`] = `
+<div
+  className="sc-AxjAm kJwmHj"
+>
+  hello world
+</div>
+`;
+
+exports[`Component: <Example /> renders in default mode 1`] = `
+<div
+  className="sc-AxjAm kJwmHj"
+>
+  hello world
+</div>
+`;

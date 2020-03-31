@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import polyfill from 'raf/polyfill'
 /* eslint-enable no-unused-vars */
 
-import App from './components/App/App'
+import App from './components/App'
 
 document.body.innerHTML = '<div id="root"></div>'
 

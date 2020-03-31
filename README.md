@@ -27,7 +27,10 @@ make .env
 Copy and paste appropriate values from the secret store into your local .env file. **Warning: Never commit this file.**
 
 * NPM_TOKEN
+* BIT_TOKEN
 * CODECLIMATE_REPO_TOKEN
+
+If using bit.dev; to get token you will need to run `make bitToken` follow the URL in terminal to login, the token will be provided, added to .env and .npmrc
 
 ## Develop
 
