@@ -76,8 +76,6 @@ or
 make bitPublish
 ```
 
-This will also run on the deploy pipeline in travis-ci if merged to master
-
 #### import
 Because Bit isolates components and decouples them from the repository, you can develop Bit components from any repository in your codebase.
 https://docs.bit.dev/docs/sourcing-components

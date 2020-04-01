@@ -23,8 +23,6 @@ jobs:
     - DOMAIN_NAME=dev-sls.$DOMAIN_NAME
     - ENV=dev
     - REALM=nonprod
-  - stage: publish to bit.dev
-    script: make bitPublish
   - stage: deploy to production
     if: branch = master
     script: make deploy
