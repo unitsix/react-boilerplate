@@ -64,10 +64,10 @@ dotenv:
 	@echo "Overwrite .env with $(DOTENV)"
 	cp $(DOTENV) .env
 
-_shell: _registry
+_shell: _clearNPMregistry _registry
 	bash
 
-_registry: _clearNPMregistry
+_registry:
 	echo "Adding npm token to npm registry"
 	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
 	yarn config set registry http://registry.npmjs.org
