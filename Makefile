@@ -13,7 +13,7 @@ endif
 ################
 
 shell: $(DOTENV_TARGET)
-	docker-compose run -p 8080:8080 --rm serverless make _shell
+	docker-compose run -p 8080:8080 -p 8085:8085 --rm serverless make _shell
 
 start: $(DOTENV_TARGET)
 	docker-compose run -p 8080:8080 --rm serverless make _deps _start
@@ -23,6 +23,15 @@ test: $(DOTENV_TARGET)
 
 build: $(DOTENV_TARGET)
 	docker-compose run --rm serverless make _deps _build
+
+bitPublish: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _publishComponents
+
+bitExport: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _exportComponents
+
+bitImport: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _importComponents
 
 deploy: $(DOTENV_TARGET) $(ASSUME_REQUIRED)
 	docker-compose run --rm serverless make _deps _build _deploy _cacheInvalidation
@@ -63,17 +72,29 @@ _registry: _clearNPMregistry
 	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
 	yarn config set registry http://registry.npmjs.org
 	echo "Completed adding npm token to npm registry"
-	echo "Adding bit.dev to npm registry"
-	echo "always-auth=true" >> .npmrc
-	echo "@bit:registry=https://node.bit.dev" >> .npmrc
-	echo "//node.bit.dev/:_authToken=$(BIT_TOKEN)" >> .npmrc
-	echo "Completed adding bit.dev to npm registry"
+	bit config set analytics_reporting false
+	bit config set error_reporting false
+	bit config set user.token $(BIT_TOKEN)
 
 _bitLogin:
 	bit login
 	echo $(bit config get user.token) >> ~/.bittoken
 	export BIT_TOKEN=$(awk '{print $NF}' ~/.bittoken | paste -sd, | sed 's/,/, /g')
 	sed -i 's/BIT_TOKEN.*/BIT_TOKEN='"$(BIT_TOKEN)"'/' .env
+
+_publishComponents:
+	bit tag --all
+	bit export $(BIT_USER).$(BIT_COLLECTION)
+
+_exportComponents:
+	bit tag --all
+	bit export $(BIT_USER).$(BIT_COLLECTION) --all --include-dependencies --rewire
+
+_checkComponents:
+	bit status
+
+_importComponents: _checkComponents
+	bit import
 
 _clearNPMregistry:
 	rm .npmrc
@@ -83,9 +104,7 @@ _clearNPMregistry:
 _deps: node_modules
 
 # run yarn install
-node_modules:
-	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
-	yarn config set registry http://registry.npmjs.org
+node_modules: _registry
 	yarn install
 
 _test:
@@ -97,8 +116,9 @@ _systemTest:
 
 _testUnitWithCoverage:
 	yarn run lint
-	echo "GIT_BRANCH = $(GIT_BRANCH)"
 	./node_modules/nyc/bin/nyc.js --reporter=json yarn run test
+	bit status
+	echo "Do not forget to export any changed bit.dev components with make exportComponents"
 
 _testUnit:
 	yarn run test

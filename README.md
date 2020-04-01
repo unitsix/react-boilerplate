@@ -51,6 +51,77 @@ bash# make _test           # All tests
 bash# make _testUnitWatch  # Only unit tests, in watch mode
 ```
 
+### bit.dev
+
+To get a token or refresh your will need to login
+
+```bash
+make
+bash# make getBitToken
+```
+
+You will now have a BIT_TOKEN in your .env
+
+https://docs.bit.dev/docs/tutorials/bit-react-tutorial#track-a-new-component
+
+```bash
+make shell
+bit tag --all
+bit export <username>.<collection>
+```
+
+or
+
+```bash
+make bitPublish
+```
+
+This will also run on the deploy pipeline in travis-ci if merged to master
+
+#### import
+Because Bit isolates components and decouples them from the repository, you can develop Bit components from any repository in your codebase.
+https://docs.bit.dev/docs/sourcing-components
+
+To develop a component from the consuming repository use the bit import command:
+
+```bash
+make shell
+bit import mui-org.material-ui/button
+```
+
+##### Imports all components in the remote collection
+```bash
+bit import "<username>.<collection>/*"
+```
+
+or
+##### Re-import all the componets in the local, this will refresh them if updated elsewhere
+
+```bash
+make bitImport
+```
+
+#### eject/export
+
+Try to eject all components before merging, this will mean they are versioned and managed in bit.dev, not any specific repo.
+
+https://docs.bit.dev/docs/workflows/microfrontends
+
+To eject a component
+
+```bash
+make shell
+bit export <username>.<collection> --all --include-dependencies --rewire
+```
+
+or
+
+```bash
+make exportComponents
+```
+
+https://docs.bit.dev/docs/apis/cli-all#eject
+
 ## Build
 
 Fully test and build SPA package:

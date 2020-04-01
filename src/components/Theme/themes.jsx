@@ -1,7 +1,14 @@
 import { css } from 'styled-components'
 
 const colors = {
-  primary: '#404040'
+  default: {
+    primary: '#404040',
+    background: 'transparent'
+  },
+  dark: {
+    primary: '#fff',
+    background: '#404040'
+  }
 }
 
 const breakpoints = [ 40, 52, 64 ]
@@ -10,17 +17,18 @@ const space = [ 0, 10, 20, 30, 40 ]
 
 const typography = {
   h1: css`
-      color: ${colors.primary};
       font-weight: bold;
       font-size: 42px;
       line-height: 50px;
       letter-spacing: -0.4px;
-      -webkit-font-smoothing: antialiased;
     `
 }
 
+const body = `
+  -webkit-font-smoothing: antialiased;
+`
+
 const shared = {
-  colors,
   breakpoints,
   typography,
   breakpoint: {
@@ -40,12 +48,18 @@ const shared = {
   baseFontSize: '15px'
 }
 
-
 export default {
-  dark: {
+  default: {
+    body,
+    colors: colors.default,
     ...shared
   },
-  default: {
+  dark: {
+    body: `
+      ${body}
+      background: ${colors.dark.background};
+    `,
+    colors: colors.dark,
     ...shared
   }
 }

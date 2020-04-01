@@ -8,8 +8,10 @@ import GlobalStyle from './global-styles'
 class Theme extends React.Component {
   render = () => {
     const { children, dark = false } = this.props
+    const theme = themes[dark ? 'dark' : 'default']
+    document.body.style = theme.body
     return (
-      <ThemeProvider theme={themes[dark ? 'dark' : 'default']}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <ThemeWrapper>
           {children}
