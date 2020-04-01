@@ -82,5 +82,12 @@
   },
   "optionalDependencies": {
     "fsevents": "^1.2.11"
+  },
+  "bit": {
+    "env": {
+      "compiler": "bit.envs/compilers/react@1.0.16"
+    },
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "npm"
   }
 }

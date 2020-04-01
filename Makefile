@@ -13,7 +13,7 @@ endif
 ################
 
 shell: $(DOTENV_TARGET)
-	docker-compose run -p 8080:8080 --rm serverless make _shell
+	docker-compose run -p 8080:8080 -p 8085:8085 --rm serverless make _shell
 
 start: $(DOTENV_TARGET)
 	docker-compose run -p 8080:8080 --rm serverless make _deps _start
@@ -23,6 +23,15 @@ test: $(DOTENV_TARGET)
 
 build: $(DOTENV_TARGET)
 	docker-compose run --rm serverless make _deps _build
+
+bitPublish: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _publishComponents
+
+bitExport: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _exportComponents
+
+bitImport: $(DOTENV_TARGET)
+	docker-compose run --rm serverless make _deps _importComponents
 
 deploy: $(DOTENV_TARGET) $(ASSUME_REQUIRED)
 	docker-compose run --rm serverless make _deps _build _deploy _cacheInvalidation
@@ -35,6 +44,10 @@ remove: $(DOTENV_TARGET)
 
 assumeRole: .env
 	docker run --rm -e "AWS_ACCOUNT_ID" -e "AWS_ROLE" amaysim/aws:1.1.3 assume-role.sh >> .env
+
+getBitToken: $(DOTENV_TARGET)
+	docker-compose run -p 8080:8080 -p 8085:8085 --rm serverless make _bitLogin _registry
+
 .PHONY: assumeRole
 
 ##########
@@ -51,20 +64,47 @@ dotenv:
 	@echo "Overwrite .env with $(DOTENV)"
 	cp $(DOTENV) .env
 
-_shell: _registry
+_shell: _clearNPMregistry _registry
 	bash
 
 _registry:
+	echo "Adding npm token to npm registry"
 	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
 	yarn config set registry http://registry.npmjs.org
+	echo "Completed adding npm token to npm registry"
+	bit config set analytics_reporting false
+	bit config set error_reporting false
+	bit config set user.token $(BIT_TOKEN)
+
+_bitLogin:
+	bit login
+	echo $(bit config get user.token) >> ~/.bittoken
+	export BIT_TOKEN=$(awk '{print $NF}' ~/.bittoken | paste -sd, | sed 's/,/, /g')
+	sed -i 's/BIT_TOKEN.*/BIT_TOKEN='"$(BIT_TOKEN)"'/' .env
+
+_publishComponents:
+	bit tag --all
+	bit export $(BIT_USER).$(BIT_COLLECTION)
+
+_exportComponents:
+	bit tag --all
+	bit export $(BIT_USER).$(BIT_COLLECTION) --all --include-dependencies --rewire
+
+_checkComponents:
+	bit status
+
+_importComponents: _checkComponents
+	bit import
+
+_clearNPMregistry:
+	rm .npmrc
+	touch .npmrc
 
 # _deps depends on node_modules
 _deps: node_modules
 
 # run yarn install
-node_modules:
-	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
-	yarn config set registry http://registry.npmjs.org
+node_modules: _registry
 	yarn install
 
 _test:
@@ -76,9 +116,9 @@ _systemTest:
 
 _testUnitWithCoverage:
 	yarn run lint
-	echo "GIT_BRANCH = $(GIT_BRANCH)"
 	./node_modules/nyc/bin/nyc.js --reporter=json yarn run test
-	# ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info
+	bit status
+	echo "Do not forget to export any changed bit.dev components with make exportComponents"
 
 _testUnit:
 	yarn run test
