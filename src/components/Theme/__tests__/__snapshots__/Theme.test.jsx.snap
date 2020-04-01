@@ -2,7 +2,7 @@
 
 exports[`Component: <Example /> renders in dark mode 1`] = `
 <div
-  className="sc-AxjAm kJwmHj"
+  className="sc-AxjAm bmILZt"
 >
   hello world
 </div>
