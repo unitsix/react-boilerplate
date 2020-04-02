@@ -69,6 +69,7 @@ _shell: _clearNPMregistry _registry
 
 _registry:
 	echo "Adding npm token to npm registry"
+	npm config set @bit:registry https://node.bit.dev
 	echo "//registry.npmjs.org/:_authToken=$(NPM_TOKEN)" >> .npmrc
 	yarn config set registry http://registry.npmjs.org
 	echo "Completed adding npm token to npm registry"
@@ -88,7 +89,7 @@ _publishComponents:
 
 _exportComponents:
 	bit tag --all
-	bit export $(BIT_USER).$(BIT_COLLECTION) --all --include-dependencies --rewire
+	bit export $(BIT_USER).$(BIT_COLLECTION) --all --eject --include-dependencies --rewire
 
 _checkComponents:
 	bit status

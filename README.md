@@ -109,7 +109,7 @@ To eject a component
 
 ```bash
 make shell
-bit export <username>.<collection> --all --include-dependencies --rewire
+bit export <username>.<collection> --all --eject --include-dependencies --rewire
 ```
 
 or

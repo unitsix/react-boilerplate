@@ -713,6 +713,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@bit/unitsix.react-components.theme@*":
+  version "0.0.6"
+  resolved "https://node.bit.dev/unitsix.react-components.theme/-/unitsix.react-components.theme-0.0.6.tgz#ad15bb7ccba23848e66e9d127554a2872ad88dc1"
+  dependencies:
+    prop-types "^15.7.2"
+    react "^16.13.0"
+    styled-components "^5.0.1"
+
 "@emotion/is-prop-valid@^0.8.3":
   version "0.8.8"
   resolved "https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
